@@ -20,10 +20,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
       
-      - name: Setup TeX Live
-        uses: texeurope/setup-tinytex@v1
-        with:
-          version: '2024.04'
+      - name: Setup TinyTeX
+        uses: r-lib/actions/setup-tinytex@v2
       
       - name: Install required LaTeX packages
         run: |
