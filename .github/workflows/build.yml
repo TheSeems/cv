@@ -25,8 +25,11 @@ jobs:
       
       - name: Install required LaTeX packages
         run: |
-          tlmgr install curve fontawesome5 biblatex biber xcolor pgf cochineal cabin inconsolata comment csquotes relsize xpatch silence tools collection-fontsrecommended carlisle || true
+          tlmgr install curve fontawesome5 biblatex biblatex-ieee biber xcolor pgf cochineal cabin inconsolata comment csquotes relsize xpatch silence tools collection-fontsrecommended carlisle babel-english xstring || true
           # carlisle contains ltxtable.sty needed by curve class
+          # babel-english for English language support
+          # biblatex-ieee for IEEE citation style
+          # xstring for string manipulation
       
       - name: Compile CV
         working-directory: src
