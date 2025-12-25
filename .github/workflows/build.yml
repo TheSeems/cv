@@ -1,0 +1,73 @@
+name: Build and Deploy CV
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths-ignore:
+      - 'output/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+      
+      - name: Setup TeX Live
+        uses: texeurope/setup-tinytex@v1
+        with:
+          version: '2024.04'
+      
+      - name: Install required LaTeX packages
+        run: |
+          tlmgr install curve fontawesome5 biblatex biber xcolor tikz geometry fontspec cochineal cabin zi4 comment csquotes pgffor hyperref url babel graphicx relsize xpatch silence longtable array ifxetex ifluatex
+      
+      - name: Compile CV
+        working-directory: src
+        run: |
+          xelatex -interaction=nonstopmode cv-llt.tex
+          biber cv-llt
+          xelatex -interaction=nonstopmode cv-llt.tex
+          xelatex -interaction=nonstopmode cv-llt.tex
+      
+      - name: Prepare output directory
+        run: |
+          mkdir -p output
+          mv src/cv-llt.pdf output/cv.pdf
+          # Clean up LaTeX auxiliary files
+          rm -f src/*.aux src/*.bbl src/*.bcf src/*.blg src/*.log src/*.out src/*.run.xml src/*.toc
+      
+      - name: Commit PDF to repository
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add output/cv.pdf
+          if ! git diff --staged --quiet; then
+            git commit -m "Update CV PDF [skip ci]"
+            git push
+          else
+            echo "No changes to commit"
+          fi
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: |
+            output/cv.pdf
+            index.html
+          name: cv-pdf
+      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
