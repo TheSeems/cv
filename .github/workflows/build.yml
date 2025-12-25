@@ -25,11 +25,7 @@ jobs:
       
       - name: Install required LaTeX packages
         run: |
-          tlmgr install curve fontawesome5 biblatex biblatex-ieee biber xcolor pgf cochineal cabin inconsolata comment csquotes relsize xpatch silence tools collection-fontsrecommended carlisle babel-english xstring || true
-          # carlisle contains ltxtable.sty needed by curve class
-          # babel-english for English language support
-          # biblatex-ieee for IEEE citation style
-          # xstring for string manipulation
+          tlmgr install curve fontawesome5 biblatex biblatex-ieee biber xcolor pgf cochineal cabin inconsolata comment csquotes relsize xpatch silence tools carlisle babel-english xstring || true
       
       - name: Compile CV
         working-directory: src
@@ -43,7 +39,6 @@ jobs:
         run: |
           mkdir -p output
           mv src/cv-llt.pdf output/cv.pdf
-          # Clean up LaTeX auxiliary files
           rm -f src/*.aux src/*.bbl src/*.bcf src/*.blg src/*.log src/*.out src/*.run.xml src/*.toc
       
       - name: Commit PDF to repository
@@ -57,19 +52,4 @@ jobs:
           else
             echo "No changes to commit"
           fi
-      
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-      
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: |
-            output/cv.pdf
-            index.html
-          name: cv-pdf
-      
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
 
