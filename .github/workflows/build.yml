@@ -24,9 +24,8 @@ jobs:
         uses: r-lib/actions/setup-tinytex@v2
       
       - name: Install required LaTeX packages
-        continue-on-error: true
         run: |
-          tlmgr install curve fontawesome5 biblatex biber xcolor pgf cochineal cabin inconsolata comment csquotes relsize xpatch silence
+          tlmgr install curve fontawesome5 biblatex biber xcolor pgf cochineal cabin inconsolata comment csquotes relsize xpatch silence ltxtable tools collection-fontsrecommended
       
       - name: Compile CV
         working-directory: src
