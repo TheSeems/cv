@@ -16,15 +16,12 @@
 % Change the fonts if you want
 \ifxetexorluatex % If you're using XeLaTeX or LuaLaTeX
   \usepackage{fontspec} 
-  %% You can use \setmainfont etc; I'm just using these font packages here because they provide OpenType fonts for use by XeLaTeX/LuaLaTeX anyway
-  \usepackage[p,osf,swashQ]{cochineal}
-  \usepackage[medium,bold]{cabin}
-  \usepackage[varqu,varl,scale=0.9]{zi4}
+  \setmainfont{Latin Modern Roman}
+  \setsansfont{Latin Modern Sans}
+  \setmonofont{Latin Modern Mono}
 \else % If you're using pdfLaTeX or latex
   \usepackage[T1]{fontenc}
-  \usepackage[p,osf,swashQ]{cochineal}
-  \usepackage{cabin}
-  \usepackage[varqu,varl,scale=0.9]{zi4}
+  \usepackage{lmodern}
 \fi
 
 % Change the page margins if you want
