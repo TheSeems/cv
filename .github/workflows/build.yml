@@ -24,33 +24,41 @@ jobs:
       - name: Setup TinyTeX
         uses: r-lib/actions/setup-tinytex@v2
       
-      - name: Install required LaTeX packages
+      - name: Install required LaTeX packages and fonts
         run: |
-          tlmgr install curve fontawesome5 biblatex biblatex-ieee biber xcolor pgf comment csquotes relsize xpatch silence tools carlisle babel-english xstring upquote lmodern || true
+          tlmgr install curve fontawesome5 biblatex biblatex-ieee biber xcolor pgf comment csquotes relsize xpatch silence tools carlisle babel-english babel-russian xstring upquote lmodern etoolbox || true
+          sudo apt-get update && sudo apt-get install -y fonts-dejavu fonts-liberation fonts-paratype || true
       
-      - name: Compile CV
+      - name: Compile CV (English)
         working-directory: src
         run: |
-          xelatex -interaction=nonstopmode cv-llt.tex
+          xelatex -interaction=nonstopmode -jobname=cv-llt "\def\cvlang{en}\def\babellang{english}\input{cv-llt.tex}"
           biber cv-llt
-          xelatex -interaction=nonstopmode cv-llt.tex
-          xelatex -interaction=nonstopmode cv-llt.tex
+          xelatex -interaction=nonstopmode -jobname=cv-llt "\def\cvlang{en}\def\babellang{english}\input{cv-llt.tex}"
+          xelatex -interaction=nonstopmode -jobname=cv-llt "\def\cvlang{en}\def\babellang{english}\input{cv-llt.tex}"
+          mkdir -p ../output/en
+          mv cv-llt.pdf ../output/en/cv.pdf
+          rm -f *.aux *.bbl *.bcf *.blg *.log *.out *.run.xml *.toc
       
-      - name: Prepare output directory
+      - name: Compile CV (Russian)
+        working-directory: src
         run: |
-          mkdir -p output
-          mv src/cv-llt.pdf output/cv.pdf
-          rm -f src/*.aux src/*.bbl src/*.bcf src/*.blg src/*.log src/*.out src/*.run.xml src/*.toc
+          xelatex -interaction=nonstopmode -jobname=cv-llt "\def\cvlang{ru}\def\babellang{russian}\input{cv-llt.tex}"
+          biber cv-llt
+          xelatex -interaction=nonstopmode -jobname=cv-llt "\def\cvlang{ru}\def\babellang{russian}\input{cv-llt.tex}"
+          xelatex -interaction=nonstopmode -jobname=cv-llt "\def\cvlang{ru}\def\babellang{russian}\input{cv-llt.tex}"
+          mkdir -p ../output/ru
+          mv cv-llt.pdf ../output/ru/cv.pdf
+          rm -f *.aux *.bbl *.bcf *.blg *.log *.out *.run.xml *.toc
       
-      - name: Commit PDF to repository
+      - name: Commit PDFs to repository
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add -f output/cv.pdf
+          git add -f output/en/cv.pdf output/ru/cv.pdf
           if ! git diff --staged --quiet; then
-            git commit -m "Update CV PDF [skip ci]"
+            git commit -m "Update CV PDFs [skip ci]"
             git push
           else
             echo "No changes to commit"
           fi
-

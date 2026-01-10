@@ -1,21 +1,51 @@
 \documentclass[a4paper,skipsamekey,11pt,english]{curve}
 
+\RequirePackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+\IfFontExistsTF{PT Serif}{%
+  \setmainfont{PT Serif}%
+  \setsansfont{PT Sans}%
+  \setmonofont{PT Mono}%
+}{%
+  \setmainfont{DejaVu Serif}%
+  \setsansfont{DejaVu Sans}%
+  \setmonofont{DejaVu Sans Mono}%
+}
+
 % Default biblatex style used for the publication list is APA6. If you wish to use a different style or pass other options to biblatex you can change them here. 
 \PassOptionsToPackage{style=ieee,sorting=ydnt,uniquename=init,defernumbers=true}{biblatex}
 
+% Language support - define language before loading settings
+\providecommand{\cvlang}{en}  % Default language code (en/ru), can be overridden during compilation
+\providecommand{\babellang}{english}  % Default babel language name (english/russian), can be overridden during compilation
+\PassOptionsToPackage{russian,english}{babel}
+
 % Most commands and style definitions are in settings.sty.
 \usepackage{settings}
+
+% Select language after babel is loaded
+\expandafter\selectlanguage\expandafter{\babellang}
+
+% CurVe uses \continuedname for rubric continuation titles.
+% Force it after language selection to avoid mismatches.
+\ifdefstring{\babellang}{russian}{%
+  \continuedname{~(продолжение)}%
+}{%
+  \continuedname{~(continued)}%
+}
+
+% Helper command to expand language in file paths
+\newcommand{\inputlangfile}[1]{%
+  \begingroup
+  \edef\temp{\endgroup\noexpand\input{content/\cvlang/#1}}%
+  \temp
+}
 
 % If you need to further customise your biblatex setup e.g. with \DeclareFieldFormat etc please add them here AFTER loading settings.sty. For example, to remove the default "[Online] Available:" prefix before URLs when using the IEEE style:
 \DefineBibliographyStrings{english}{url={\textsc{url}}}
 
 %% Only needed if you want a Publication List
 \addbibresource{own-bib.bib}
-
-
-% Change the fonts if you want
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}
 
 % Change the page margins if you want
 % \geometry{left=1cm,right=1cm,top=1.5cm,bottom=1.5cm}
@@ -36,7 +66,7 @@
 
 
 \leftheader{%
-  {\LARGE\bfseries\sffamily Alexey Akhundov}
+  {\LARGE\bfseries\sffamily \ifdefstring{\babellang}{russian}{Алексей Ахундов}{Alexey Akhundov}}
 
   \makefield{\faEnvelope[regular]}{\href{mailto:me@theseems.ru}{\texttt{me@theseems.ru}}}
   \makefield{\faGithub[regular]}{\href{https://github.com/theseems}{\texttt{theseems}}}
@@ -62,8 +92,8 @@
 \makeheaders[c]
 
 \makerubric{summary}
-\makerubric{education}
 \makerubric{employment}
+\makerubric{education}
 
 \makerubric{skills}
 \makerubric{interest}
