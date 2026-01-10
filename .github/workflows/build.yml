@@ -26,7 +26,7 @@ jobs:
       
       - name: Install required LaTeX packages and fonts
         run: |
-          tlmgr install curve fontawesome5 biblatex biblatex-ieee biber xcolor pgf comment csquotes relsize xpatch silence tools carlisle babel-english babel-russian xstring upquote lmodern etoolbox || true
+          tlmgr install curve fontawesome5 biblatex biblatex-ieee biber xcolor pgf comment csquotes relsize xpatch silence tools carlisle babel-english babel-russian xstring upquote lmodern etoolbox ms || true
           sudo apt-get update && sudo apt-get install -y fonts-dejavu fonts-liberation fonts-paratype || true
       
       - name: Compile CV (English)
