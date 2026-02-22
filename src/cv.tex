@@ -1,0 +1,120 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{fontspec}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\usepackage{xifthen}
+\usepackage{babel}
+
+% Define custom colors
+\definecolor{primary}{HTML}{0B4F6C} % Deep professional blue
+\definecolor{text}{HTML}{2B2B2B}
+\definecolor{gray}{HTML}{595959}
+\definecolor{lightgray}{HTML}{E8E8E8}
+
+% Fonts
+\defaultfontfeatures{Ligatures=TeX}
+\IfFontExistsTF{PT Sans}{%
+  \setmainfont{PT Sans}%
+  \setsansfont{PT Sans}%
+}{%
+  \setmainfont{DejaVu Sans}%
+  \setsansfont{DejaVu Sans}%
+}
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.6in}
+\addtolength{\evensidemargin}{-0.6in}
+\addtolength{\textwidth}{1.2in}
+\addtolength{\topmargin}{-0.6in}
+\addtolength{\textheight}{1.2in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+\color{text}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\Large\bfseries\color{primary}
+}{}{0em}{}[\color{primary}\titlerule \vspace{-5pt}]
+
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{\large#1} & \textbf{\color{primary}#2} \\
+      \textit{\small\color{gray}#3} & \textit{\small\color{gray} #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textbf{\large#1} & \textbf{\color{primary}#2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemi{\color{primary}$\vcenter{\hbox{\tiny$\bullet$}}$}
+\renewcommand\labelitemii{\color{primary}$\vcenter{\hbox{\tiny$\circ$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.15in, itemsep=0pt, parsep=0pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+\newcommand{\inputlangfile}[1]{%
+  \begingroup
+  \edef\temp{\endgroup\noexpand\input{content/\cvlang/#1}}%
+  \temp
+}
+
+% Select language
+\expandafter\selectlanguage\expandafter{\babellang}
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    {\Huge \textbf{\ifdefstring{\babellang}{russian}{Алексей Ахундов}{Alexey Akhundov}}} \\ \vspace{8pt}
+    \small \color{gray}
+    \faEnvelope \hspace{2pt} \href{mailto:me@theseems.ru}{\underline{me@theseems.ru}} \hspace{5pt} $|$ \hspace{5pt}
+    \faLinkedin \hspace{2pt} \href{https://www.linkedin.com/in/alexey-akhundov-3a823a1b4/}{\underline{LinkedIn}} \hspace{5pt} $|$ \hspace{5pt}
+    \faGithub \hspace{2pt} \href{https://github.com/theseems}{\underline{theseems}} \hspace{5pt} $|$ \hspace{5pt}
+    \faTelegram \hspace{2pt} \href{https://t.me/theseems}{\underline{@theseems}} \hspace{5pt} $|$ \hspace{5pt}
+    \faGlobe \hspace{2pt} \href{https://theseems.ru/}{\underline{theseems.ru}}
+\end{center}
+\vspace{5pt}
+
+\inputlangfile{summary.tex}
+\inputlangfile{employment.tex}
+\inputlangfile{skills.tex}
+\inputlangfile{projects.tex}
+\inputlangfile{education.tex}
+\inputlangfile{misc.tex}
+
+\end{document}
